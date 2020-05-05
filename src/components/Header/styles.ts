@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 interface ContainerProps {
   size?: 'small' | 'large';
+  url: string;
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -22,6 +23,7 @@ export const Container = styled.div<ContainerProps>`
         text-decoration: none;
         font-size: 16px;
         transition: opacity 0.2s;
+        padding-bottom: 5px;
 
         & + a {
           margin-left: 32px;
@@ -30,6 +32,20 @@ export const Container = styled.div<ContainerProps>`
         &:hover {
           opacity: 0.6;
         }
+      }
+
+      .borderList {
+        border-bottom-color: #ff872c;
+        border-bottom-width: 2px;
+        border-bottom-style: solid;
+        border: ${props => (props.url === '/' ? 1 : 0)};
+      }
+
+      .borderImport {
+        border-bottom-color: #ff872c;
+        border-bottom-width: 2px;
+        border-bottom-style: solid;
+        border: ${props => (props.url === '/import' ? 1 : 0)};
       }
     }
   }
