@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { format, parseISO } from 'date-fns';
+import { FiChevronDown } from 'react-icons/fi';
 
 import income from '../../assets/income.svg';
 import outcome from '../../assets/outcome.svg';
@@ -36,10 +38,10 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     async function loadTransactions(): Promise<void> {
       const response = await api.get('/transactions');
-      console.log(response.data);
+
       const { balance: balanc, transactions: transact } = response.data;
-      setTransactions(transact);
       setBalance(balanc);
+      setTransactions(transact);
     }
 
     loadTransactions();
@@ -52,6 +54,11 @@ const Dashboard: React.FC = () => {
     }).format(Number(value));
 
     return valueConverted;
+  }
+
+  function formatDate(date: string): string {
+    const dateFormatDate = parseISO(date);
+    return format(dateFormatDate, 'dd/MM/yyyy');
   }
 
   return (
@@ -92,10 +99,22 @@ const Dashboard: React.FC = () => {
           <table>
             <thead>
               <tr>
-                <th>Título</th>
-                <th>Preço</th>
-                <th>Categoria</th>
-                <th>Data</th>
+                <th>
+                  Título
+                  <FiChevronDown size={18} />
+                </th>
+                <th>
+                  Preço
+                  <FiChevronDown size={18} />
+                </th>
+                <th>
+                  Categoria
+                  <FiChevronDown size={18} />
+                </th>
+                <th>
+                  Data
+                  <FiChevronDown size={18} />
+                </th>
               </tr>
             </thead>
 
@@ -107,8 +126,8 @@ const Dashboard: React.FC = () => {
                     {transaction.type === 'income' ? '' : '- '}
                     {convertValue(Number(transaction.value))}
                   </td>
-                  <td>Sell</td>
-                  <td>20/04/2020</td>
+                  <td>{transaction.category.title}</td>
+                  <td>{formatDate(transaction.created_at.toString())}</td>
                 </tr>
               ))}
             </tbody>
